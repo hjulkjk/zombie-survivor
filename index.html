@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Zombie Survivor</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="introScreen" class="screen">
+  <div class="intro-bg"></div>
+  <div class="intro-content">
+    <div class="napoleon-wrap">
+      <div class="napoleon-frame">
+        <svg class="napoleon-svg" viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#3a2010"/><stop offset="100%" stop-color="#0a0505"/></linearGradient>
+            <linearGradient id="coatGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2a3a6a"/><stop offset="100%" stop-color="#0a1a3a"/></linearGradient>
+            <linearGradient id="hatGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2a2a2a"/><stop offset="100%" stop-color="#050505"/></linearGradient>
+            <radialGradient id="faceGrad" cx="0.4" cy="0.4"><stop offset="0%" stop-color="#f5d5a8"/><stop offset="100%" stop-color="#c9a878"/></radialGradient>
+          </defs>
+          <rect width="200" height="240" fill="url(#skyGrad)"/>
+          <path d="M40,240 Q50,170 100,160 Q150,170 160,240 Z" fill="url(#coatGrad)" stroke="#000" stroke-width="2"/>
+          <path d="M85,180 L100,165 L115,180 L110,240 L90,240 Z" fill="#e8e0d0"/>
+          <rect x="88" y="140" width="24" height="25" fill="#d4b088"/>
+          <ellipse cx="100" cy="115" rx="30" ry="35" fill="url(#faceGrad)" stroke="#8a6a40" stroke-width="1.5"/>
+          <path d="M70,110 Q72,85 100,82 Q128,85 130,110 Q125,95 100,92 Q75,95 70,110 Z" fill="#5a3a1a"/>
+          <ellipse cx="88" cy="112" rx="3.5" ry="2.5" fill="#1a1a1a"/>
+          <ellipse cx="112" cy="112" rx="3.5" ry="2.5" fill="#1a1a1a"/>
+          <path d="M90,138 Q100,142 110,138" stroke="#7a3a3a" stroke-width="2" fill="none"/>
+          <path d="M55,90 Q60,55 100,50 Q140,55 145,90 L155,95 Q150,70 100,42 Q50,70 45,95 Z" fill="url(#hatGrad)" stroke="#000" stroke-width="2"/>
+          <path d="M45,95 Q60,88 100,88 Q140,88 155,95 Q140,100 100,100 Q60,100 45,95 Z" fill="#1a1a1a"/>
+          <circle cx="100" cy="88" r="7" fill="#fff"/>
+        </svg>
+      </div>
+      <div class="napoleon-hat">👑</div>
+    </div>
+    <h1 class="intro-title">ИМПЕРИЯ&nbsp;БОБРИКОВ</h1>
+    <p class="intro-sub">представляет</p>
+    <h2 class="intro-game">ZOMBIE&nbsp;SURVIVOR</h2>
+    <div class="intro-progress"><div id="introProgressFill" class="intro-progress-fill"></div></div>
+    <div class="intro-tip">Загрузка...</div>
+  </div>
+</div>
+
+<div id="mainMenu" class="screen hidden">
+  <canvas id="menuCanvas"></canvas>
+  <div class="bg-label" id="bgLabel">ИМПЕРИЯ БОБРИКОВ</div>
+  <div class="menu-content">
+    <h1 class="game-title">ZOMBIE<br><span>SURVIVOR</span></h1>
+    <div class="profile-box">
+      <div class="profile-avatar" id="menuAvatar">🦫</div>
+      <div class="profile-info">
+        <div class="profile-name" id="menuName">Бобёр</div>
+        <div class="profile-stats">
+          <span>💰 <b id="menuCoins">0</b></span>
+          <span>💎 <b id="menuCrystals">0</b></span>
+        </div>
+      </div>
+    </div>
+    <div class="record-display">🏆 <b id="menuRecord">0</b> · 🎯 Раунд <b id="menuRound">1</b></div>
+    <button class="btn btn-primary" onclick="startGame()">▶ ИГРАТЬ</button>
+    <div class="menu-row">
+      <button class="btn" onclick="showScreen('characterMenu')">👤 ГЕРОЙ</button>
+      <button class="btn" onclick="showScreen('shopMenu')">🛒 МАГАЗИН</button>
+    </div>
+    <div class="menu-row">
+      <button class="btn" onclick="showScreen('questsMenu')">📜 КВЕСТЫ</button>
+      <button class="btn" onclick="showScreen('achievementsMenu')">🏆 ДОСТИЖЕНИЯ</button>
+    </div>
+    <div class="menu-row">
+      <button class="btn" onclick="showScreen('talentsMenu')">🌳 ТАЛАНТЫ</button>
+      <button class="btn" onclick="showScreen('inventoryMenu')">🎒 ИНВЕНТАРЬ</button>
+    </div>
+    <div class="menu-row">
+      <button class="btn" onclick="showScreen('petsMenu')">🐺 ПИТОМЦЫ</button>
+      <button class="btn" onclick="showScreen('recordsMenu')">🏅 РЕКОРДЫ</button>
+    </div>
+    <div class="menu-row">
+      <button class="btn" onclick="showScreen('dailyMenu')">🎁 ЕЖЕДНЕВНОЕ</button>
+      <button class="btn" onclick="showScreen('settingsMenu')">⚙ НАСТР</button>
+    </div>
+    <div class="menu-quote" id="menuQuote">"Империя начинается с одного бобра"</div>
+  </div>
+</div>
+
+<div id="characterMenu" class="screen hidden">
+  <div class="menu-bg"></div>
+  <div class="shop-box">
+    <h2 class="screen-title">👤 Выбор героя</h2>
+    <div class="shop-balance">💰 <b id="charCoins">0</b> · 💎 <b id="charCrystals">0</b></div>
+    <div id="characterList" class="character-list"></div>
+    <button class="btn btn-primary" onclick="showScreen('mainMenu')">◀ НАЗАД</button>
+  </div>
+</div>
+
+<div id="shopMenu" class="screen hidden">
+  <div class="menu-bg"></div>
+  <div class="shop-box">
+    <h2 class="screen-title">🛒 Магазин</h2>
+    <div class="shop-balance">💰 <b id="shopCoins">0</b> · 💎 <b id="shopCrystals">0</b></div>
+    <div class="shop-tabs">
+      <button class="shop-tab active" data-tab="items" onclick="switchShopTab('items')">Предметы</button>
+      <button class="shop-tab" data-tab="skills" onclick="switchShopTab('skills')">🎯 Навыки</button>
+      <button class="shop-tab" data-tab="cases" onclick="switchShopTab('cases')">📦 Кейсы</button>
+      <button class="shop-tab" data-tab="lives" onclick="switchShopTab('lives')">❤ Жизни</button>
+      <button class="shop-tab" data-tab="crystals" onclick="switchShopTab('crystals')">💎 Кристаллы</button>
+    </div>
+    <div id="shopItems" class="shop-items"></div>
+    <div id="shopSkills" class="shop-items hidden"></div>
+    <div id="shopCases" class="shop-items hidden"></div>
+    <div id="shopLives" class="shop-items hidden"></div>
+    <div id="shopCrystals" class="shop-items hidden"></div>
+    <button class="btn btn-primary" onclick="showScreen('mainMenu')">◀ НАЗАД</button>
+  </div>
+</div>
+
+<div id="questsMenu" class="screen hidden">
+  <div class="menu-bg"></div>
+  <div class="shop-box">
+    <h2 class="screen-title">📜 Квесты</h2>
+    <div class="shop-tabs">
+      <button class="shop-tab active" data-tab="daily" onclick="switchQuestTab('daily')">Ежедневные</button>
+      <button class="shop-tab" data-tab="weekly" onclick="switchQuestTab('weekly')">Еженедельные</button>
+    </div>
+    <div id="questsList" class="shop-items"></div>
+    <button class="btn btn-primary" onclick="showScreen('mainMenu')">◀ НАЗАД</button>
+  </div>
+</div>
+
+<div id="achievementsMenu" class="screen hidden">
+  <div class="menu-bg"></div>
+  <div class="shop-box">
+    <h2 class="screen-title">🏆 Достижения</h2>
+    <div class="ach-progress">Выполнено: <b id="achDone">0</b> / <b id="achTotal">30</b></div>
+    <div id="achList" class="shop-items"></div>
+    <button class="btn btn-primary" onclick="showScreen('mainMenu')">◀ НАЗАД</button>
+  </div>
+</div>
+
+<div id="talentsMenu" class="screen hidden">
+  <div class="talents-bg"></div>
+  <div class="shop-box talents-box">
+    <h2 class="screen-title">🌳 Дерево талантов</h2>
+    <div class="talents-info">Очко таланта за каждого босса</div>
+    <div class="talents-points">Очки: <b id="talPoints">0</b></div>
+    <div id="talentsGrid" class="talents-grid"></div>
+    <button class="btn btn-primary" onclick="closeTalents()">◀ НАЗАД</button>
+    <button class="btn btn-danger" onclick="resetTalents()">🗑 СБРОСИТЬ</button>
+  </div>
+</div>
+
+<div id="inventoryMenu" class="screen hidden">
+  <div class="menu-bg"></div>
+  <div class="shop-box">
+    <h2 class="screen-title">🎒 Инвентарь</h2>
+    <div class="inv-stats">Открыто кейсов: <b id="invCaseCount">0</b></div>
+    <div class="shop-tabs">
+      <button class="shop-tab active" data-tab="skins" onclick="switchInvTab('skins')">🔪 Оружие</button>
+      <button class="shop-tab" data-tab="charskins" onclick="switchInvTab('charskins')">👤 Герой</button>
+      <button class="shop-tab" data-tab="ult" onclick="switchInvTab('ult')">⚡ Ульты</button>
+    </div>
+    <div id="invList" class="shop-items"></div>
+    <button class="btn btn-primary" onclick="showScreen('mainMenu')">◀ НАЗАД</button>
+  </div>
+</div>
+
+<div id="petsMenu" class="screen hidden">
+  <div class="menu-bg"></div>
+  <div class="shop-box">
+    <h2 class="screen-title">🐺 Питомцы</h2>
+    <div class="shop-balance">💰 <b id="petsCoins">0</b> · 💎 <b id="petsCrystals">0</b></div>
+    <div id="petsList" class="shop-items"></div>
+    <button class="btn btn-primary" onclick="showScreen('mainMenu')">◀ НАЗАД</button>
+  </div>
+</div>
+
+<div id="recordsMenu" class="screen hidden">
+  <div class="menu-bg"></div>
+  <div class="shop-box">
+    <h2 class="screen-title">🏅 Таблица рекордов</h2>
+    <div class="shop-tabs">
+      <button class="shop-tab active" data-tab="kills" onclick="switchRecordsTab('kills')">💀 Убийства</button>
+      <button class="shop-tab" data-tab="time" onclick="switchRecordsTab('time')">⏱ Время</button>
+      <button class="shop-tab" data-tab="round" onclick="switchRecordsTab('round')">🎯 Раунд</button>
+    </div>
+    <div id="recordsList" class="shop-items"></div>
+    <button class="btn btn-primary" onclick="showScreen('mainMenu')">◀ НАЗАД</button>
+  </div>
+</div>
+
+<div id="dailyMenu" class="screen hidden">
+  <div class="menu-bg"></div>
+  <div class="shop-box">
+    <h2 class="screen-title">🎁 Ежедневные награды</h2>
+    <div class="daily-streak">Серия: <b id="dailyStreak">0</b> дней подряд 🔥</div>
+    <div id="dailyCalendar" class="daily-calendar"></div>
+    <button class="btn btn-primary" onclick="showScreen('mainMenu')">◀ НАЗАД</button>
+  </div>
+</div>
+
+<div id="settingsMenu" class="screen hidden">
+  <div class="menu-bg"></div>
+  <div class="menu-box settings-wide">
+    <h2 class="screen-title">Настройки</h2>
+    <div class="settings-scroll">
+      <div class="setting promo-block">
+        <label>🎁 Промокод</label>
+        <div class="promo-row">
+          <input type="text" id="promoInput" placeholder="Промокод..." maxlength="30">
+          <button class="btn-promo" onclick="applyPromo()">OK</button>
+        </div>
+        <div id="promoResult" class="promo-result"></div>
+      </div>
+      <div class="setting">
+        <label>👤 Имя игрока</label>
+        <div class="promo-row">
+          <input type="text" id="playerNameInput" placeholder="Введи имя..." maxlength="16">
+          <button class="btn-promo" onclick="savePlayerName()">OK</button>
+        </div>
+      </div>
+      <div class="setting">
+        <label>🎨 Фон меню</label>
+        <div class="option-group" id="bgOptions">
+          <button data-val="zombie" class="active" onclick="setBg('zombie')">🧟</button>
+          <button data-val="stars" onclick="setBg('stars')">⭐</button>
+          <button data-val="matrix" onclick="setBg('matrix')">🟢</button>
+          <button data-val="fire" onclick="setBg('fire')">🔥</button>
+          <button data-val="snow" onclick="setBg('snow')">❄</button>
+          <button data-val="rain" onclick="setBg('rain')">🌧</button>
+        </div>
+      </div>
+      <div class="setting">
+        <label>🌦 Погода в игре</label>
+        <div class="option-group" id="weatherOptions">
+          <button data-val="clear" onclick="setWeather('clear')">☀</button>
+          <button data-val="fog" class="active" onclick="setWeather('fog')">🌫</button>
+          <button data-val="rain" onclick="setWeather('rain')">🌧</button>
+          <button data-val="snow" onclick="setWeather('snow')">❄</button>
+          <button data-val="storm" onclick="setWeather('storm')">⛈</button>
+          <button data-val="night" onclick="setWeather('night')">🌙</button>
+          <button data-val="sunset" onclick="setWeather('sunset')">🌅</button>
+        </div>
+      </div>
+      <div class="setting">
+        <label>🌸 Сезон карты</label>
+        <div class="option-group" id="seasonOptions">
+          <button data-val="none" class="active" onclick="setSeason('none')">Обычно</button>
+          <button data-val="spring" onclick="setSeason('spring')">🌸 Весна</button>
+          <button data-val="summer" onclick="setSeason('summer')">☀ Лето</button>
+          <button data-val="autumn" onclick="setSeason('autumn')">🍂 Осень</button>
+          <button data-val="winter" onclick="setSeason('winter')">❄ Зима</button>
+        </div>
+      </div>
+      <div class="setting">
+        <label>🔊 Громкость: <span id="volVal">70</span>%</label>
+        <input type="range" id="volumeSlider" min="0" max="100" value="70" oninput="onVolumeChange()">
+      </div>
+      <div class="setting">
+        <label>🎨 Графика</label>
+        <div class="option-group" id="gfxOptions">
+          <button data-val="low" onclick="setGfx('low')">Низкое</button>
+          <button data-val="medium" onclick="setGfx('medium')">Среднее</button>
+          <button data-val="high" class="active" onclick="setGfx('high')">2K Ultra</button>
+        </div>
+      </div>
+      <div class="setting">
+        <label>📺 Разрешение</label>
+        <div class="option-group" id="resOptions">
+          <button data-val="0.5" onclick="setRes(0.5)">50%</button>
+          <button data-val="0.75" onclick="setRes(0.75)">75%</button>
+          <button data-val="1" onclick="setRes(1)">100%</button>
+          <button data-val="auto" class="active" onclick="setRes('auto')">Авто</button>
+        </div>
+      </div>
+      <div class="setting">
+        <label>⚡ Скорость анимации</label>
+        <div class="option-group" id="speedOptions">
+          <button data-val="slow" onclick="setAnimSpeed('slow')">Медленно</button>
+          <button data-val="normal" class="active" onclick="setAnimSpeed('normal')">Норма</button>
+          <button data-val="fast" onclick="setAnimSpeed('fast')">Быстро</button>
+        </div>
+      </div>
+      <div class="setting">
+        <label>💾 Автосохранение</label>
+        <div class="option-group" id="autosaveOptions">
+          <button data-val="30" onclick="setAutosave(30)">30 сек</button>
+          <button data-val="60" class="active" onclick="setAutosave(60)">1 мин</button>
+          <button data-val="0" onclick="setAutosave(0)">Выкл</button>
+        </div>
+      </div>
+      <div class="setting">
+        <label>💥 Показывать урон</label>
+        <div class="option-group" id="dmgShowOptions">
+          <button data-val="on" class="active" onclick="setDmgShow('on')">Вкл</button>
+          <button data-val="off" onclick="setDmgShow('off')">Выкл</button>
+        </div>
+      </div>
+      <div class="setting">
+        <label>🔪 Автоатака (когда стоишь)</label>
+        <div class="option-group" id="autoAttackOptions">
+          <button data-val="on" class="active" onclick="setAutoAttack('on')">Вкл</button>
+          <button data-val="off" onclick="setAutoAttack('off')">Выкл</button>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="backFromSettings()">◀ НАЗАД</button>
+  </div>
+</div>
+
+<div id="gameScreen" class="screen hidden">
+  <canvas id="game"></canvas>
+  <div id="hud" class="hidden">
+    <div class="hud-top-left">
+      <div class="hp-wrap"><div id="hpFill" class="hp-fill"></div><div id="hpText" class="hp-text">100 / 100</div></div>
+      <div class="xp-wrap"><div id="xpFill" class="xp-fill"></div><div id="xpText" class="xp-text">0 / 15 XP</div></div>
+      <div class="stamina-wrap"><div id="staminaFill" class="stamina-fill"></div><div id="staminaText" class="stamina-text">Выносливость</div></div>
+    </div>
+    <div class="hud-top-center">
+      <div class="round-info">
+        <span class="round-label">РАУНД</span>
+        <span class="round-num" id="roundNum">1</span>
+        <span class="round-progress" id="roundProgress">0 / 12 💀</span>
+      </div>
+      <div class="lives-display" id="livesDisplay"></div>
+      <div class="combo-display hidden" id="comboDisplay">×1.0</div>
+    </div>
+    <div class="hud-top-right">
+      <div class="stat">💰 <b id="gameCoins">0</b></div>
+      <div class="stat">💎 <b id="gameCrystals">0</b></div>
+      <div class="stat">💀 <b id="killCount">0</b></div>
+      <div class="stat">⏱ <b id="timeCount">0</b>с</div>
+      <div class="stat" id="fpsDisplay">FPS <b id="fpsValue">60</b></div>
+    </div>
+    <div class="minimap" id="minimap">
+      <canvas id="minimapCanvas" width="150" height="150"></canvas>
+    </div>
+    <div class="skill-bar">
+      <div class="skill-slot" id="skillSlotE">
+        <div class="skill-key">E</div>
+        <div class="skill-icon" id="skillIconE">—</div>
+        <div class="skill-cd hidden" id="skillCdE"></div>
+      </div>
+      <div class="skill-slot" id="skillSlotQ">
+        <div class="skill-key">Q</div>
+        <div class="skill-icon" id="skillIconQ">—</div>
+        <div class="skill-cd hidden" id="skillCdQ"></div>
+      </div>
+    </div>
+    <button id="pauseBtn" class="pause-btn" onclick="pauseGame()">⏸</button>
+  </div>
+  <div id="buffsList" class="buffs-list hidden"></div>
+  <div id="bossBar" class="boss-bar hidden">
+    <div class="boss-name" id="bossName">👹 БОСС</div>
+    <div class="boss-phase" id="bossPhase">ФАЗА 1 / 2</div>
+    <div class="boss-hp-outer"><div id="bossHpFill" class="boss-hp-fill"></div></div>
+    <div id="bossHpText" class="boss-hp-text">1000 / 1000</div>
+  </div>
+  <div id="bossIntro" class="boss-intro hidden"><div class="boss-intro-text">БОСС<br><span>ПРИБЛИЖАЕТСЯ</span></div></div>
+  <div id="pauseOverlay" class="overlay hidden">
+    <div class="overlay-box"><h2>ПАУЗА</h2>
+      <button class="btn btn-primary" onclick="resumeGame()">▶ ПРОДОЛЖИТЬ</button>
+      <button class="btn btn-danger" onclick="exitToMenu()">🏠 В МЕНЮ</button>
+    </div>
+  </div>
+  <div id="levelUpOverlay" class="overlay hidden">
+    <div class="levelup-box">
+      <h2 class="levelup-title">⭐ НОВЫЙ УРОВЕНЬ!</h2>
+      <div id="buffCards" class="buff-cards"></div>
+    </div>
+  </div>
+  <div id="roundClearOverlay" class="overlay hidden">
+    <div class="round-clear-box">
+      <h2 class="round-clear-title">✅ РАУНД <span id="clearRound">1</span> ПРОЙДЕН!</h2>
+      <p class="round-clear-reward">💰 +<b id="clearCoins">50</b> · 🌳 +1 талант</p>
+      <p class="round-clear-timer">Отдых: <b id="restTimer">15</b> сек</p>
+      <button class="btn btn-primary" onclick="skipRest()">▶ ПРОПУСТИТЬ</button>
+      <button class="btn" onclick="openTalentsFromRound()">🌳 ТАЛАНТЫ</button>
+    </div>
+  </div>
+  <div id="deathOverlay" class="overlay hidden">
+    <div class="death-box">
+      <h2 class="death-title">ВЫ ПОГИБЛИ</h2>
+      <p class="death-sub" id="deathSub"></p>
+      <div id="deathButtons"></div>
+    </div>
+  </div>
+  <div id="gameOverOverlay" class="overlay hidden">
+    <div class="overlay-box"><h2 class="go-title">ИГРА ОКОНЧЕНА</h2>
+      <p class="go-stats">💀 Убито: <b id="finalKills">0</b></p>
+      <p class="go-stats">⭐ Уровень: <b id="finalLevel">1</b></p>
+      <p class="go-stats">🎯 Раунд: <b id="finalRound">1</b></p>
+      <p class="go-stats">💰 Заработано: <b id="finalCoins">0</b></p>
+      <button class="btn btn-primary" onclick="restartGame()">🔄 ЗАНОВО</button>
+      <button class="btn" onclick="exitToMenu()">🏠 МЕНЮ</button>
+    </div>
+  </div>
+  <div id="achievementToast" class="achievement-toast hidden">
+    <div class="ach-icon">🏆</div>
+    <div class="ach-body"><div class="ach-title">ДОСТИЖЕНИЕ</div><div class="ach-name" id="achName"></div></div>
+  </div>
+  <div id="eventToast" class="event-toast hidden">
+    <div class="event-icon">☄</div>
+    <div class="event-body"><div class="event-title">СОБЫТИЕ!</div><div class="event-name" id="eventName"></div></div>
+  </div>
+</div>
+
+<div id="caseModal" class="case-modal hidden">
+  <div class="case-content">
+    <h2 class="case-title">📦 ОТКРЫТИЕ КЕЙСА</h2>
+    <div class="case-spinner" id="caseSpinner">
+      <div class="case-item-show" id="caseItemShow">
+        <div class="ci-icon">❓</div>
+        <div class="ci-name">...</div>
+      </div>
+    </div>
+    <div class="case-result hidden" id="caseResult">
+      <div class="case-result-icon" id="caseResultIcon">🔪</div>
+      <div class="case-result-rarity" id="caseResultRarity">COMMON</div>
+      <div class="case-result-name" id="caseResultName">Скин</div>
+      <div class="case-result-desc" id="caseResultDesc">Новый предмет!</div>
+    </div>
+    <button class="btn btn-primary hidden" id="caseOkBtn" onclick="closeCaseModal()">✅ ЗАБРАТЬ</button>
+  </div>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>
